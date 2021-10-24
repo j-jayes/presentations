@@ -1,0 +1,40 @@
+---
+title: "data-ingest-for-plots"
+author: "JJayes"
+date: "24/10/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(here)
+
+df <- read_excel(here("economic-geography-reading-group", "data", "marginal-treatment-effect.xlsx"))
+```
+
+```{r}
+fig_mte <- df %>% 
+    mutate(type = "Point estimate",
+           across(c(x, y), round)) %>% 
+    ggplot(aes(x, y, colour = type)) +
+    geom_point() +
+    geom_line() +
+    geom_hline(lty = 2, aes(yintercept = 26700, colour = "Point estimate mean")) +
+    scale_y_continuous(labels = scales::dollar_format()) +
+    xaringanthemer::theme_xaringan() +
+    scale_color_manual(values = c("#2b8cbe", "midnightblue")) +
+    labs(x = "Quantile of income distribution",
+         y = "Treatment effect ($)",
+         colour = NULL) +
+    theme(legend.position = "bottom")
+
+df %>% write_rds(here("economic-geography-reading-group", "data", "marginal-treatment-effect-df.rds"))
+
+# fig_mte %>% write_rds(here("economic-geography-reading-group", "data", "marginal-treatment-effect-plot.rds"))
+```
+
