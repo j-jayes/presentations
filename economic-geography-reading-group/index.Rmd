@@ -59,6 +59,8 @@ class: center, inverse
 knitr::include_graphics("images/volcano-cover-2.jpg")
 ```
 
+# Test
+
 ---
 
 ### No longer a working paper!
