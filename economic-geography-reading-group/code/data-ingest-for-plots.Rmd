@@ -15,6 +15,8 @@ library(readxl)
 library(here)
 
 df <- read_excel(here("economic-geography-reading-group", "data", "marginal-treatment-effect.xlsx"))
+
+theme_set(theme_light())
 ```
 
 ```{r}
@@ -38,3 +40,125 @@ df %>% write_rds(here("economic-geography-reading-group", "data", "marginal-trea
 # fig_mte %>% write_rds(here("economic-geography-reading-group", "data", "marginal-treatment-effect-plot.rds"))
 ```
 
+
+```{r}
+library(haven)
+
+df <- read_stata(here("economic-geography-reading-group", "data", "house_info_location.dta")) %>% 
+        mutate(destroyed = ifelse(destroyed == 1, "Destroyed", "Not destroyed"))
+
+
+df %>%
+  ggplot(aes(house_total_value, fill = destroyed)) +
+  geom_density(alpha = .3) +
+  scale_x_log10(labels = scales::dollar_format()) +
+  theme_xaringan() +
+  scale_fill_manual(values = c("#2b8cbe", "darkred")) +
+  labs(
+    x = "House value",
+    y = NULL,
+    fill = NULL
+  ) +
+  theme(legend.position = "bottom")
+
+df %>%
+  ggplot(aes(house_year, fill = destroyed)) +
+  geom_density(alpha = .5) +
+  scale_x_continuous(labels = scales::number_format(big.mark = "")) +
+  theme_xaringan() +
+  scale_fill_manual(values = c("#fc8d59", "#99d594")) +
+  labs(
+    x = "Year of house construction",
+    y = NULL,
+    fill = NULL
+  ) +
+    theme(legend.position = "bottom")
+```
+
+
+```{r}
+df %>% 
+    ggplot(aes(longitude, latitude, colour = house_year, shape = destroyed)) +
+    geom_point() +
+    scale_color_gradient2(low = "#fc8d59",
+                          high = "#99d594",
+                          mid = "#ffffbf",
+                          midpoint = 1935) +
+    theme_xaringan() +
+    labs(x = NULL,
+         y = NULL,
+         colour = "Year of construction",
+         shape = NULL) +
+    theme(legend.position = "bottom",
+          panel.grid = element_blank(),
+          axis.text = element_blank()) +
+    guides(shape = guide_legend(nrow = 2),
+           colour = guide_colorbar(barwidth = 20,
+                                   title.position = "top"))
+
+df %>%
+  ggplot(aes(longitude, latitude, colour = house_total_value, shape = destroyed)) +
+  geom_point() +
+  scale_color_gradient2(
+    low = "blue",
+    high = "red",
+    mid = "pink",
+    midpoint = log10(40000),
+    trans = "log10",
+    labels = scales::dollar_format()
+  ) +
+    scale_shape_manual(values = c(19, 17)) +
+    theme_xaringan() +
+  labs(
+    colour = "House value",
+    shape = NULL,
+    x = NULL,
+    y = NULL
+  ) +
+    theme(legend.position = "bottom",
+          panel.grid = element_blank(),
+          axis.text = element_blank()) +
+    guides(shape = guide_legend(nrow = 2),
+           colour = guide_colorbar(barwidth = 20,
+                                   title.position = "top"))
+```
+
+
+```{r}
+df %>% 
+    ggplot(aes(longitude, latitude, colour = house_total_value)) +
+    geom_point() +
+    scale_color_gradient2(low = "blue",
+                          high = "red",
+                          mid = "pink",
+                          midpoint = log10(40000),
+                          trans = "log10",
+                          labels = scales::dollar_format()) +
+    facet_wrap(~ destroyed,
+               nrow = 2) +
+    labs(fill = "House value")
+
+
+```
+
+```{r}
+df %>% 
+    ggplot(aes(longitude, latitude, colour = house_total_value, shape = destroyed)) +
+    geom_point() +
+    scale_color_gradient2(low = "blue",
+                          high = "red",
+                          mid = "pink",
+                          midpoint = log10(40000),
+                          trans = "log10",
+                          labels = scales::dollar_format()) +
+    # scale_shape_manual(values = c(11, 19)) +
+    theme_xaringan() +
+    labs(colour = "House value",
+         shape = NULL,
+         x = NULL,
+         y = NULL) +
+    theme(panel.grid = element_blank(),
+          axis.text = element_blank(),
+          axis.ticks = element_blank())
+    
+```

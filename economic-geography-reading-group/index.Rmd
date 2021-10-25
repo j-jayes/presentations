@@ -40,7 +40,7 @@ style_mono_accent(
 
 ```{r xaringanExtra, echo=FALSE, warning=FALSE}
 xaringanExtra::use_tile_view()
-
+xaringanExtra::use_panelset()
 xaringanExtra::use_progress_bar(color = "#0051BA", location = "top", height = "10px")
 ```
 
@@ -123,7 +123,13 @@ knitr::include_url("https://academic.oup.com/restud/advance-article/doi/10.1093/
 
 #### Compelling natural experiment
 
+Random assignment. Binary instrument and response. 
+
+Similar to Tancredi's paper on China, but nice instrument!
+
 #### Heterogenous effects of migration
+
+Impact on young vs old - the group is interested in, e.g. Clara
 
 ]
 
@@ -150,6 +156,12 @@ knitr::include_url("https://academic.oup.com/restud/advance-article/doi/10.1093/
 ---
 ## What are the findings?
 
+
+
+.panelset[
+.panel[.panel-name[Marginal treatment effect]
+
+
 ```{r, fig.height=5}
 df <- read_rds(here("economic-geography-reading-group", "data", "marginal-treatment-effect-df.rds"))
 
@@ -170,5 +182,152 @@ df %>%
          colour = NULL) +
     theme(legend.position = "bottom")
 ```
+
+]
+
+.panel[.panel-name[House age density]
+
+```{r}
+# df %>%
+#   ggplot(aes(house_year, fill = destroyed)) +
+#   geom_density(alpha = .5) +
+#   scale_x_continuous(labels = scales::number_format(big.mark = "")) +
+#   theme_xaringan() +
+#   scale_fill_manual(values = c("#fc8d59", "#99d594")) +
+#   labs(
+#     x = "Year of house construction",
+#     y = NULL,
+#     fill = NULL
+#   ) +
+#     theme(legend.position = "bottom")
+```
+
+]
+]
+---
+## Volcano
+
+
+
+---
+## Balance tests
+
+.panelset[
+.panel[.panel-name[House age map]
+
+```{r, fig.height=6}
+library(haven)
+
+df <- read_stata(here("economic-geography-reading-group", "data", "house_info_location.dta")) %>% 
+        mutate(destroyed = ifelse(destroyed == 1, "Destroyed", "Not destroyed"))
+
+df %>% 
+    ggplot(aes(longitude, latitude, colour = house_year, shape = destroyed)) +
+    geom_point(size = 2) +
+    scale_color_gradient2(low = "#fc8d59",
+                          high = "#99d594",
+                          mid = "#ffffbf",
+                          midpoint = 1935) +
+    theme_xaringan() +
+    labs(x = NULL,
+         y = NULL,
+         colour = "Year of construction",
+         shape = NULL) +
+    theme(legend.position = "bottom",
+          panel.grid = element_blank(),
+          axis.text = element_blank()) +
+    guides(shape = guide_legend(nrow = 2),
+           colour = guide_colorbar(barwidth = 20,
+                                   title.position = "top"))
+```
+
+]
+
+.panel[.panel-name[House age density]
+
+```{r, fig.height=6}
+df %>%
+  ggplot(aes(house_year, fill = destroyed)) +
+  geom_density(alpha = .5) +
+  scale_x_continuous(labels = scales::number_format(big.mark = "")) +
+  theme_xaringan() +
+  scale_fill_manual(values = c("#fc8d59", "#99d594")) +
+  labs(
+    x = "Year of house construction",
+    y = NULL,
+    fill = NULL
+  ) +
+    theme(legend.position = "bottom")
+```
+
+]
+]
+
+---
+
+## Balance tests
+
+.panelset[
+.panel[.panel-name[House price map]
+
+```{r, fig.height=6}
+df %>%
+  ggplot(aes(longitude, latitude, colour = house_total_value, shape = destroyed)) +
+  geom_point(size = 2) +
+  scale_color_gradient2(
+    low = "blue",
+    high = "red",
+    mid = "pink",
+    midpoint = log10(40000),
+    trans = "log10",
+    labels = scales::dollar_format()
+  ) +
+    scale_shape_manual(values = c(19, 17)) +
+    theme_xaringan() +
+  labs(
+    colour = "House value",
+    shape = NULL,
+    x = NULL,
+    y = NULL
+  ) +
+    theme(legend.position = "bottom",
+          panel.grid = element_blank(),
+          axis.text = element_blank()) +
+    guides(shape = guide_legend(nrow = 2),
+           colour = guide_colorbar(barwidth = 20,
+                                   title.position = "top"))
+```
+
+]
+
+.panel[.panel-name[House price density]
+
+```{r, fig.height=6}
+df %>%
+  ggplot(aes(house_total_value, fill = destroyed)) +
+  geom_density(alpha = .3) +
+  scale_x_log10(labels = scales::dollar_format()) +
+  theme_xaringan() +
+  scale_fill_manual(values = c("#2b8cbe", "darkred")) +
+  labs(
+    x = "House value",
+    y = NULL,
+    fill = NULL
+  ) +
+  theme(legend.position = "bottom")
+```
+
+]
+]
+
+---
+
+## Balance tests
+
+Because 
+
+**house-price ~ income and wealth**, 
+
+we assume that the shock is as godd as randomly assigned.
 
 
