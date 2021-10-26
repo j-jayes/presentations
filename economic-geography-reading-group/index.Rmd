@@ -154,11 +154,62 @@ Impact on young vs old - the group is interested in, e.g. Clara
 ]
 
 ---
+class: inverse
+
+## How does it contribute to the literature?
+
+### Helps us to disentangle the selection effect from the returns to migration
+
+---
 ## What are the findings?
 
+.pull-left[
 
+![](images/more-money.jpg)
+
+Where the outcome is labour income:
+
+**Compliers age [0-25] at time of eruption earn more over their lifetimes**
+
+But their parents are marginally worse off
+]
+
+.pull-right[
+
+![](images/more-schooling.jpg)
+
+Where the outcome is schooling:
+
+**Compliers age [0-25] at time of eruption attain more education**
+
+]
+
+---
+## What are the findings?
 
 .panelset[
+
+.panel[.panel-name[Wald and 2SLS estimates]
+
+.pull-left[
+
+Wald estimate:
+
+**$ 26,600**
+
+]
+
+.pull-right[
+
+2SLS estimate:
+
+**$ 27,500**
+
+83% of the average earnings in the control group!
+
+]
+
+]
 .panel[.panel-name[Marginal treatment effect]
 
 
@@ -185,29 +236,161 @@ df %>%
 
 ]
 
-.panel[.panel-name[House age density]
+.panel[.panel-name[Lifetime earnings effects]
 
-```{r}
-# df %>%
-#   ggplot(aes(house_year, fill = destroyed)) +
-#   geom_density(alpha = .5) +
-#   scale_x_continuous(labels = scales::number_format(big.mark = "")) +
-#   theme_xaringan() +
-#   scale_fill_manual(values = c("#fc8d59", "#99d594")) +
-#   labs(
-#     x = "Year of house construction",
-#     y = NULL,
-#     fill = NULL
-#   ) +
-#     theme(legend.position = "bottom")
+
+]
+]
+
+
+---
+## Instrument
+
+Families whose houses were destroyed were more likely to move away from the Westman Islands
+
+---
+## LATE
+
+####dis Authors estimate the [Local Average Treatment Effect](https://www.nber.org/system/files/working_papers/t0118/t0118.pdf) for the compliers - those who were shocked by the instrument into the treatment group
+
+---
+## LATE: Requirements
+
+.pull-left[
+
+- Independence assumption
+
+- Exclusion restriction
+
+- Monotonicity assumption
+
+- Existence of a first stage
+
+]
+
+.pull-right[
+
+![](images/imbens-angrist.jpg)
+
+]
+
+---
+## LATE: Independence
+
+.pull-left[
+
+#### Requirement
+
+- Instrument is independent of the potential outcomes and potential treatment assignment
+
+]
+
+.pull-left[
+
+#### Is it met?
+
+- House destruction was **as good as random** within the town. Spatial correlation shown to be unimportant
+
+]
+
+---
+## LATE: Exclusion restriction
+
+.pull-left[
+
+#### Requirement
+
+- Any effect of instrument on outcome must be through the treatment
+
+- The instrument operates through a single known causal channel
+
+]
+
+.pull-left[
+
+#### Is it met?
+
+- House destruction can impact lifetime income only through moving away from Westman Islands
+
+- What about the wealth shock?
+
+- Etc?
+
+]
+
+---
+## LATE: Monotonicity assumption
+
+.pull-left[
+
+#### Requirement
+
+- AKA "No defiers assumption"
+
+- We need the absence of anyone who would have left the Westman Islands but who were pushed to stay by the volcano.
+]
+
+.pull-left[
+
+#### Is it met?
+
+- Seems totally reasonable.
+
+]
+
+---
+## LATE: Existence of a first stage
+
+.pull-left[
+
+#### Requirement
+
+- Significant first-stage of the instrument on treatment
+
+- Empirically testable
+
+- Rule of thumb requires F-stat > 10
+
+]
+
+.pull-left[
+
+#### Is it met?
+
+![](images/first-stage.PNG)
+
+]
+
+
+---
+## Balance tests
+
+```{r, fig.width=4}
+knitr::include_graphics("images/balance-tests.png")
 ```
 
-]
-]
 ---
-## Volcano
+## Balance tests
+
+.pull-left[
+#### Measured differences
+
+- Houses destroyed on average 2 years older (mean of house age is 30)
+
+- The treatment group is somewhat more likely to have been born in the Westman Islands (83% versus 78% for the control
+group)
+
+- But can't reject that this is just random noise
 
 
+]
+
+.pull-left[
+#### Unobserved differences?
+
+- Are there any reasonable sorting hypotheses that would make inhabitants of destroyed houses different?
+
+]
 
 ---
 ## Balance tests
@@ -326,8 +509,23 @@ df %>%
 
 Because 
 
-**house-price ~ income and wealth**, 
+**House-price ~ income and wealth**, 
 
-we assume that the shock is as godd as randomly assigned.
+the authors assume that the shock is as good as randomly assigned.
+
+---
+
+## Estimation results: labour income
+
+--
+
+**Wald Estimator**
+
+Formula:
+
+$$ \frac{E[income_i|destroyed_i] - E[income_i|not destroyed_i]}{E[moved_i|destroyed_i] - E[moved_i|not destroyed_i]} $$
+Numbers:
+
+$$ \frac{$3,000}{11.4\%} = $26,600 $$
 
 

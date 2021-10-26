@@ -162,3 +162,75 @@ df %>%
           axis.ticks = element_blank())
     
 ```
+
+### Geom parttree for decision boundary of plot
+
+```{r}
+library(tidymodels)
+
+df_mod <- df %>% 
+    mutate(destroyed = factor(destroyed))
+
+df_folds <- vfold_cv(df_mod, strata = destroyed)
+
+tree_spec <- decision_tree(
+  cost_complexity = tune(),
+  tree_depth = tune(),
+  min_n = tune()) %>%
+  set_engine("rpart") %>%
+  set_mode("classification")
+
+tree_grid <- grid_regular(cost_complexity(), tree_depth(), min_n(), levels = 4)
+
+```
+
+```{r}
+doParallel::registerDoParallel()
+
+set.seed(345)
+tree_rs <- tune_grid(
+  tree_spec,
+  destroyed ~ .,
+  resamples = df_folds,
+  grid = tree_grid,
+  metrics = metric_set(roc_auc, precision, recall)
+)
+
+tree_rs
+```
+
+Evaluate model
+
+```{r}
+collect_metrics(tree_rs)
+
+autoplot(tree_rs) + theme_light(base_family = "IBMPlexSans")
+
+final_tree <- finalize_model(tree_spec, select_best(tree_rs, "roc_auc") %>% mutate(cost_complexity = 0.0000000000000001,
+                                                                                   min_n = 1))
+
+final_fit <- fit(final_tree, destroyed ~ ., df_mod)
+
+library(vip)
+
+final_fit %>%
+  vip(geom = "col", aesthetics = list(fill = "midnightblue", alpha = 0.8)) +
+  scale_y_continuous(expand = c(0, 0))
+```
+
+```{r}
+library(parttree)
+
+ex_fit <- fit(
+  final_tree,
+  destroyed ~ latitude + longitude,
+  df_mod
+)
+
+df_mod %>% 
+    ggplot(aes(longitude, latitude)) +
+    geom_parttree(data = ex_fit, aes(fill = destroyed), alpha = 0.3) +
+    geom_point(aes(colour = destroyed))
+
+```
+
