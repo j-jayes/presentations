@@ -15,6 +15,8 @@ library(readxl)
 library(here)
 
 df <- read_excel(here("economic-geography-reading-group", "data", "marginal-treatment-effect.xlsx"))
+
+theme_set(theme_light())
 ```
 
 ```{r}
@@ -36,5 +38,199 @@ fig_mte <- df %>%
 df %>% write_rds(here("economic-geography-reading-group", "data", "marginal-treatment-effect-df.rds"))
 
 # fig_mte %>% write_rds(here("economic-geography-reading-group", "data", "marginal-treatment-effect-plot.rds"))
+```
+
+
+```{r}
+library(haven)
+
+df <- read_stata(here("economic-geography-reading-group", "data", "house_info_location.dta")) %>% 
+        mutate(destroyed = ifelse(destroyed == 1, "Destroyed", "Not destroyed"))
+
+
+df %>%
+  ggplot(aes(house_total_value, fill = destroyed)) +
+  geom_density(alpha = .3) +
+  scale_x_log10(labels = scales::dollar_format()) +
+  theme_xaringan() +
+  scale_fill_manual(values = c("#2b8cbe", "darkred")) +
+  labs(
+    x = "House value",
+    y = NULL,
+    fill = NULL
+  ) +
+  theme(legend.position = "bottom")
+
+df %>%
+  ggplot(aes(house_year, fill = destroyed)) +
+  geom_density(alpha = .5) +
+  scale_x_continuous(labels = scales::number_format(big.mark = "")) +
+  theme_xaringan() +
+  scale_fill_manual(values = c("#fc8d59", "#99d594")) +
+  labs(
+    x = "Year of house construction",
+    y = NULL,
+    fill = NULL
+  ) +
+    theme(legend.position = "bottom")
+```
+
+
+```{r}
+df %>% 
+    ggplot(aes(longitude, latitude, colour = house_year, shape = destroyed)) +
+    geom_point() +
+    scale_color_gradient2(low = "#fc8d59",
+                          high = "#99d594",
+                          mid = "#ffffbf",
+                          midpoint = 1935) +
+    theme_xaringan() +
+    labs(x = NULL,
+         y = NULL,
+         colour = "Year of construction",
+         shape = NULL) +
+    theme(legend.position = "bottom",
+          panel.grid = element_blank(),
+          axis.text = element_blank()) +
+    guides(shape = guide_legend(nrow = 2),
+           colour = guide_colorbar(barwidth = 20,
+                                   title.position = "top"))
+
+df %>%
+  ggplot(aes(longitude, latitude, colour = house_total_value, shape = destroyed)) +
+  geom_point() +
+  scale_color_gradient2(
+    low = "blue",
+    high = "red",
+    mid = "pink",
+    midpoint = log10(40000),
+    trans = "log10",
+    labels = scales::dollar_format()
+  ) +
+    scale_shape_manual(values = c(19, 17)) +
+    theme_xaringan() +
+  labs(
+    colour = "House value",
+    shape = NULL,
+    x = NULL,
+    y = NULL
+  ) +
+    theme(legend.position = "bottom",
+          panel.grid = element_blank(),
+          axis.text = element_blank()) +
+    guides(shape = guide_legend(nrow = 2),
+           colour = guide_colorbar(barwidth = 20,
+                                   title.position = "top"))
+```
+
+
+```{r}
+df %>% 
+    ggplot(aes(longitude, latitude, colour = house_total_value)) +
+    geom_point() +
+    scale_color_gradient2(low = "blue",
+                          high = "red",
+                          mid = "pink",
+                          midpoint = log10(40000),
+                          trans = "log10",
+                          labels = scales::dollar_format()) +
+    facet_wrap(~ destroyed,
+               nrow = 2) +
+    labs(fill = "House value")
+
+
+```
+
+```{r}
+df %>% 
+    ggplot(aes(longitude, latitude, colour = house_total_value, shape = destroyed)) +
+    geom_point() +
+    scale_color_gradient2(low = "blue",
+                          high = "red",
+                          mid = "pink",
+                          midpoint = log10(40000),
+                          trans = "log10",
+                          labels = scales::dollar_format()) +
+    # scale_shape_manual(values = c(11, 19)) +
+    theme_xaringan() +
+    labs(colour = "House value",
+         shape = NULL,
+         x = NULL,
+         y = NULL) +
+    theme(panel.grid = element_blank(),
+          axis.text = element_blank(),
+          axis.ticks = element_blank())
+    
+```
+
+### Geom parttree for decision boundary of plot
+
+```{r}
+library(tidymodels)
+
+df_mod <- df %>% 
+    mutate(destroyed = factor(destroyed))
+
+df_folds <- vfold_cv(df_mod, strata = destroyed)
+
+tree_spec <- decision_tree(
+  cost_complexity = tune(),
+  tree_depth = tune(),
+  min_n = tune()) %>%
+  set_engine("rpart") %>%
+  set_mode("classification")
+
+tree_grid <- grid_regular(cost_complexity(), tree_depth(), min_n(), levels = 4)
+
+```
+
+```{r}
+doParallel::registerDoParallel()
+
+set.seed(345)
+tree_rs <- tune_grid(
+  tree_spec,
+  destroyed ~ .,
+  resamples = df_folds,
+  grid = tree_grid,
+  metrics = metric_set(roc_auc, precision, recall)
+)
+
+tree_rs
+```
+
+Evaluate model
+
+```{r}
+collect_metrics(tree_rs)
+
+autoplot(tree_rs) + theme_light(base_family = "IBMPlexSans")
+
+final_tree <- finalize_model(tree_spec, select_best(tree_rs, "roc_auc") %>% mutate(cost_complexity = 0.0000000000000001,
+                                                                                   min_n = 1))
+
+final_fit <- fit(final_tree, destroyed ~ ., df_mod)
+
+library(vip)
+
+final_fit %>%
+  vip(geom = "col", aesthetics = list(fill = "midnightblue", alpha = 0.8)) +
+  scale_y_continuous(expand = c(0, 0))
+```
+
+```{r}
+library(parttree)
+
+ex_fit <- fit(
+  final_tree,
+  destroyed ~ latitude + longitude,
+  df_mod
+)
+
+df_mod %>% 
+    ggplot(aes(longitude, latitude)) +
+    geom_parttree(data = ex_fit, aes(fill = destroyed), alpha = 0.3) +
+    geom_point(aes(colour = destroyed))
+
 ```
 
