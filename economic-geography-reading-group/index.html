@@ -17,6 +17,8 @@
     <textarea id="source">
 
 
+class: center, inverse
+
 
 
 
@@ -30,7 +32,7 @@
 }
 .xe__progress-bar {
   height: 10px;
-  background-color: #0051BA;
+  background-color: #0570b0;
   width: calc(var(--slide-current) / var(--slide-total) * 100%);
 }
 .remark-visible .xe__progress-bar {
@@ -44,16 +46,13 @@
 
 
 
----
-class: center, inverse
+
 
 ## The Gift of Moving:
 
 ### Intergenerational consequences of a mobility shock
 
-&lt;img src="images/volcano-cover-2.jpg" width="500" /&gt;
-
-# Test
+&lt;img src="images/volcano-cover-2.jpg" width="70%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -113,15 +112,19 @@ class: center, inverse
 
 #### Volcano!
 
+Lowers the cost of mobility for families whose homes destroyed. cf. Bengt's trains.
+
 #### Compelling natural experiment
 
 Random assignment. Binary instrument and response. 
 
-Similar to Tancredi's paper on China, but nice instrument!
+Similar to Tancredi's paper on China, but less endogeneity!
+
+Westman Islands are high income area, not dying town.
 
 #### Heterogenous effects of migration
 
-Impact on young vs old - the group is interested in, e.g. Clara
+Impact on young vs old - cf. Clara.
 
 ]
 
@@ -139,9 +142,9 @@ Impact on young vs old - the group is interested in, e.g. Clara
 
 #### Backdrop
 
-[**"Our Greatest Invention Makes Us Richer, Smarter, Greener, Healthier, and Happier"**](https://youtu.be/Dsofgp01tZs) - Ed Glaeser
+["Our Greatest Invention Makes Us Richer, Smarter, Greener, Healthier, and Happier"](https://youtu.be/Dsofgp01tZs) - Ed Glaeser
 
-[**"The vast majority of our jobs are not in high tech, not in manufacturing; they are in the local service sector... taxi drivers and waiters, doctors, lawyers, nurses" but productivity gains in tech hubs raise wages in these professions in the localities of these high productivity sectors**](https://www.econtalk.org/moretti-on-jobs-cities-and-innovation/#audio-highlights) - Enrico Moretti
+["The vast majority of our jobs are not in high tech, not in manufacturing; they are in the local service sector... taxi drivers and waiters, doctors, lawyers, nurses" but productivity gains in tech hubs raise wages in these professions in the localities of these high productivity sectors](https://www.econtalk.org/moretti-on-jobs-cities-and-innovation/#audio-highlights) - Enrico Moretti
 
 ]
 
@@ -205,7 +208,7 @@ Wald estimate:
 .panel[.panel-name[Marginal treatment effect]
 
 
-![](index_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -216,15 +219,32 @@ Wald estimate:
 ]
 
 
+
+---
+## Setting
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="images/volcano_ash.jpg" alt="The Eldfell Eruption of 1973 - The Atlantic" width="80%" /&gt;
+&lt;p class="caption"&gt;The Eldfell Eruption of 1973 - The Atlantic&lt;/p&gt;
+&lt;/div&gt;
+
+---
+## Setting
+
+&lt;img src="images/volcano_map.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+
 ---
 ## Instrument
 
-Families whose houses were destroyed were more likely to move away from the Westman Islands
+Families whose houses were destroyed were more likely to move away from the Westman Islands permanently.
 
 ---
 ## LATE
 
-####dis Authors estimate the [Local Average Treatment Effect](https://www.nber.org/system/files/working_papers/t0118/t0118.pdf) for the compliers - those who were shocked by the instrument into the treatment group
+Authors estimate the [Local Average Treatment Effect](https://www.nber.org/system/files/working_papers/t0118/t0118.pdf) for the compliers - those who were shocked by the instrument into the treatment group
+
+The effect for the general population will be smaller as "compliers in our experiment are a subgroup of the population that is **less well matched** to living in the Westman Islands than the average person living there."
 
 ---
 ## LATE: Requirements
@@ -283,9 +303,11 @@ Families whose houses were destroyed were more likely to move away from the West
 
 #### Is it met?
 
-- House destruction can impact lifetime income only through moving away from Westman Islands
+- House destruction can impact lifetime income &amp; education only through moving away from Westman Islands
 
 - What about the wealth shock?
+
+- What about massive inflation?
 
 - Etc?
 
@@ -338,7 +360,7 @@ Families whose houses were destroyed were more likely to move away from the West
 ---
 ## Balance tests
 
-&lt;img src="images/balance-tests.png" width="1687" /&gt;
+&lt;img src="images/balance-tests.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 ## Balance tests
@@ -369,13 +391,13 @@ group)
 .panelset[
 .panel[.panel-name[House age map]
 
-![](index_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-7-1.png" style="display: block; margin: auto;" /&gt;
 
 ]
 
 .panel[.panel-name[House age density]
 
-![](index_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
 
 ]
 ]
@@ -387,13 +409,13 @@ group)
 .panelset[
 .panel[.panel-name[House price map]
 
-![](index_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /&gt;
 
 ]
 
 .panel[.panel-name[House price density]
 
-![](index_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-10-1.png" style="display: block; margin: auto;" /&gt;
 
 ]
 ]
@@ -422,6 +444,17 @@ $$ \frac{E[income_i|destroyed_i] - E[income_i|not destroyed_i]}{E[moved_i|destro
 Numbers:
 
 $$ \frac{$3,000}{11.4\%} = $26,600 $$
+---
+
+## Estimation results: labour income
+
+**2SLS Estimator**
+
+
+---
+## Questions
+
+
 
 
     </textarea>

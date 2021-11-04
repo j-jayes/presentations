@@ -160,7 +160,30 @@ df %>%
     theme(panel.grid = element_blank(),
           axis.text = element_blank(),
           axis.ticks = element_blank())
-    
+  
+# plt_data <- plt$data %>% as_tibble()
+
+# plt_data %>% write_rds(here("economic-geography-reading-group", "data", "boundary.rds"))
+
+ggplot() +
+    geom_point(aes(longitude, latitude, colour = house_total_value, shape = destroyed), data = df) +
+    geom_tile(aes(longitude, latitude, fill = .pred_class), data = plt_data, alpha = .1, size = 5) +
+    scale_color_gradient2(low = "blue",
+                          high = "red",
+                          mid = "pink",
+                          midpoint = log10(40000),
+                          trans = "log10",
+                          labels = scales::dollar_format()) +
+    scale_fill_grey() +
+    theme_xaringan() +
+    labs(colour = "House value",
+         shape = "House outcome",
+         fill = "Lava boundary",
+         x = NULL,
+         y = NULL) +
+    theme(panel.grid = element_blank(),
+          axis.text = element_blank(),
+          axis.ticks = element_blank())  
 ```
 
 ### Geom parttree for decision boundary of plot
@@ -232,5 +255,68 @@ df_mod %>%
     geom_parttree(data = ex_fit, aes(fill = destroyed), alpha = 0.3) +
     geom_point(aes(colour = destroyed))
 
+```
+
+### Trying with svm boundary from emil hvitfield
+
+```{r}
+library(horus)
+
+svm_spec <- svm_rbf() %>% 
+    set_mode("classification") %>% 
+    set_engine("kernlab")
+
+svm_fit <- workflow() %>% 
+    add_formula(Species ~ Petal.Length + Petal.Width) %>% 
+    add_model(svm_spec) %>% 
+    fit(iris)
+
+viz_decision_boundary(svm_fit, iris)
+
+
+
+```
+
+#### Trying with KNNN
+
+```{r}
+kknn_spec <- nearest_neighbor() %>% 
+    set_mode("classification") %>% 
+    set_engine("kknn")
+
+kknn_fit <- workflow() %>% 
+    add_formula(Species ~ Petal.Length + Petal.Width) %>% 
+    add_model(kknn_spec) %>% 
+    fit(iris)
+
+viz_decision_boundary(kknn_fit, iris)
+
+
+```
+
+#### Now with my own data
+
+```{r}
+svm_spec <- svm_poly() %>%
+    set_mode("classification") %>% 
+    set_engine("kernlab") %>% 
+    set_args(degree = 3)
+
+svm_fit <- workflow() %>% 
+    add_formula(destroyed ~ latitude + longitude) %>% 
+    add_model(svm_spec) %>% 
+    fit(df_mod)
+
+plt <- viz_decision_boundary(svm_fit, df_mod, resolution = 20) +
+    coord_flip()
+
+# df_mod %>% 
+#     select(destroyed, latitude, longitude) %>% 
+#     write_rds(here("economic-geography-reading-group", "data", "house_locations.rds"))
+
+
+plt$data %>% as_tibble() %>%
+    ggplot(aes(longitude, latitude, color = .pred_class)) +
+    geom_point(size = 10, alpha = .1)
 ```
 

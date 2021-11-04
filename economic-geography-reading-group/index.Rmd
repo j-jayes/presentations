@@ -15,11 +15,14 @@ output:
       countIncrementalSlides: false
 ---
 
+class: center, inverse
+
 ```{r, echo=F, message=F}
 knitr::opts_chunk$set(
   echo = F,
   warning = F,
-  message = F
+  message = F,
+  fig.align = 'center'
 )
 library(xaringan)
 library(xaringanExtra)
@@ -30,36 +33,36 @@ library(xaringanthemer)
 ```
 
 ```{r xaringan-themer, include=FALSE, warning=FALSE}
-style_mono_accent(
-  base_color = "#2b8cbe",
+style_duo_accent(
+  secondary_color = "#bdc9e1",
+  primary_color = "#0570b0",
+  link_color = "#2b8cbe",
+  
   header_font_google = google_font("Noto Serif JP"),
-  text_font_google   = google_font("Lato", "400", "400i"),
-  code_font_google   = google_font("IBM Plex Mono")
+  text_font_google = google_font("Lato", "400", "400i"),
+  code_font_google = google_font("IBM Plex Mono")
 )
 ```
 
 ```{r xaringanExtra, echo=FALSE, warning=FALSE}
 xaringanExtra::use_tile_view()
 xaringanExtra::use_panelset()
-xaringanExtra::use_progress_bar(color = "#0051BA", location = "top", height = "10px")
+xaringanExtra::use_progress_bar(color = "#0570b0", location = "top", height = "10px")
 ```
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
 ```
 
----
-class: center, inverse
+
 
 ## The Gift of Moving:
 
 ### Intergenerational consequences of a mobility shock
 
-```{r, echo=FALSE, out.width=500}
+```{r, echo=FALSE, out.width="70%"}
 knitr::include_graphics("images/volcano-cover-2.jpg")
 ```
-
-# Test
 
 ---
 
@@ -121,15 +124,19 @@ knitr::include_url("https://academic.oup.com/restud/advance-article/doi/10.1093/
 
 #### Volcano!
 
+Lowers the cost of mobility for families whose homes destroyed. cf. Bengt's trains.
+
 #### Compelling natural experiment
 
 Random assignment. Binary instrument and response. 
 
-Similar to Tancredi's paper on China, but nice instrument!
+Similar to Tancredi's paper on China, but less endogeneity!
+
+Westman Islands are high income area, not dying town.
 
 #### Heterogenous effects of migration
 
-Impact on young vs old - the group is interested in, e.g. Clara
+Impact on young vs old - cf. Clara.
 
 ]
 
@@ -147,9 +154,9 @@ Impact on young vs old - the group is interested in, e.g. Clara
 
 #### Backdrop
 
-[**"Our Greatest Invention Makes Us Richer, Smarter, Greener, Healthier, and Happier"**](https://youtu.be/Dsofgp01tZs) - Ed Glaeser
+["Our Greatest Invention Makes Us Richer, Smarter, Greener, Healthier, and Happier"](https://youtu.be/Dsofgp01tZs) - Ed Glaeser
 
-[**"The vast majority of our jobs are not in high tech, not in manufacturing; they are in the local service sector... taxi drivers and waiters, doctors, lawyers, nurses" but productivity gains in tech hubs raise wages in these professions in the localities of these high productivity sectors**](https://www.econtalk.org/moretti-on-jobs-cities-and-innovation/#audio-highlights) - Enrico Moretti
+["The vast majority of our jobs are not in high tech, not in manufacturing; they are in the local service sector... taxi drivers and waiters, doctors, lawyers, nurses" but productivity gains in tech hubs raise wages in these professions in the localities of these high productivity sectors](https://www.econtalk.org/moretti-on-jobs-cities-and-innovation/#audio-highlights) - Enrico Moretti
 
 ]
 
@@ -243,15 +250,33 @@ df %>%
 ]
 
 
+
+---
+## Setting
+
+```{r, fig, out.width="80%", fig.cap="The Eldfell Eruption of 1973 - The Atlantic"}
+knitr::include_graphics("images/volcano_ash.jpg")
+```
+
+---
+## Setting
+
+```{r, out.width="60%"}
+knitr::include_graphics("images/volcano_map.png")
+```
+
+
 ---
 ## Instrument
 
-Families whose houses were destroyed were more likely to move away from the Westman Islands
+Families whose houses were destroyed were more likely to move away from the Westman Islands permanently.
 
 ---
 ## LATE
 
-####dis Authors estimate the [Local Average Treatment Effect](https://www.nber.org/system/files/working_papers/t0118/t0118.pdf) for the compliers - those who were shocked by the instrument into the treatment group
+Authors estimate the [Local Average Treatment Effect](https://www.nber.org/system/files/working_papers/t0118/t0118.pdf) for the compliers - those who were shocked by the instrument into the treatment group
+
+The effect for the general population will be smaller as "compliers in our experiment are a subgroup of the population that is **less well matched** to living in the Westman Islands than the average person living there."
 
 ---
 ## LATE: Requirements
@@ -310,9 +335,11 @@ Families whose houses were destroyed were more likely to move away from the West
 
 #### Is it met?
 
-- House destruction can impact lifetime income only through moving away from Westman Islands
+- House destruction can impact lifetime income & education only through moving away from Westman Islands
 
 - What about the wealth shock?
+
+- What about massive inflation?
 
 - Etc?
 
@@ -365,7 +392,7 @@ Families whose houses were destroyed were more likely to move away from the West
 ---
 ## Balance tests
 
-```{r, fig.width=4}
+```{r, fig.width=4, out.width="80%"}
 knitr::include_graphics("images/balance-tests.png")
 ```
 
@@ -401,27 +428,38 @@ group)
 ```{r, fig.height=6}
 library(haven)
 
-df <- read_stata(here("economic-geography-reading-group", "data", "house_info_location.dta")) %>% 
-        mutate(destroyed = ifelse(destroyed == 1, "Destroyed", "Not destroyed"))
+df <- read_rds(here("economic-geography-reading-group", "data", "house_locations.rds"))
+df_boundary <- read_rds(here("economic-geography-reading-group", "data", "boundary.rds"))
 
-df %>% 
-    ggplot(aes(longitude, latitude, colour = house_year, shape = destroyed)) +
-    geom_point(size = 2) +
-    scale_color_gradient2(low = "#fc8d59",
-                          high = "#99d594",
-                          mid = "#ffffbf",
-                          midpoint = 1935) +
-    theme_xaringan() +
-    labs(x = NULL,
-         y = NULL,
-         colour = "Year of construction",
-         shape = NULL) +
-    theme(legend.position = "bottom",
-          panel.grid = element_blank(),
-          axis.text = element_blank()) +
-    guides(shape = guide_legend(nrow = 2),
-           colour = guide_colorbar(barwidth = 20,
-                                   title.position = "top"))
+ ggplot() +
+  geom_point(aes(longitude, latitude, colour = house_year, shape = destroyed), data = df, size = 2) +
+  geom_tile(aes(longitude, latitude, fill = .pred_class), data = df_boundary, alpha = .1, size = 5, show.legend = F) +
+  scale_color_gradient2(
+    low = "#fc8d59",
+    high = "#99d594",
+    mid = "#ffffbf",
+    midpoint = 1935
+  ) +
+  scale_fill_grey() +
+  theme_xaringan() +
+  labs(
+    x = NULL,
+    y = NULL,
+    colour = "Year of construction",
+    shape = NULL
+  ) +
+  theme(
+    legend.position = "bottom",
+    panel.grid = element_blank(),
+    axis.text = element_blank()
+  ) +
+  guides(
+    shape = guide_legend(nrow = 2),
+    colour = guide_colorbar(
+      barwidth = 20,
+      title.position = "top"
+    )
+  )
 ```
 
 ]
@@ -454,10 +492,10 @@ df %>%
 .panel[.panel-name[House price map]
 
 ```{r, fig.height=6}
-df %>%
-  ggplot(aes(longitude, latitude, colour = house_total_value, shape = destroyed)) +
-  geom_point(size = 2) +
-  scale_color_gradient2(
+ggplot() +
+  geom_point(aes(longitude, latitude, colour = house_total_value, shape = destroyed), data = df, size = 2) +
+  geom_tile(aes(longitude, latitude, fill = .pred_class), data = df_boundary, alpha = .1, size = 5, show.legend = F) +
+    scale_color_gradient2(
     low = "blue",
     high = "red",
     mid = "pink",
@@ -465,6 +503,7 @@ df %>%
     trans = "log10",
     labels = scales::dollar_format()
   ) +
+    scale_fill_grey() +
     scale_shape_manual(values = c(19, 17)) +
     theme_xaringan() +
   labs(
@@ -527,5 +566,23 @@ $$ \frac{E[income_i|destroyed_i] - E[income_i|not destroyed_i]}{E[moved_i|destro
 Numbers:
 
 $$ \frac{$3,000}{11.4\%} = $26,600 $$
+---
+
+## Estimation results: labour income
+
+**2SLS Estimator**
+
+
+---
+## Questions
+
+**Inflation**
+
+```{r}
+library(readxl)
+
+df <- read_excel(here("economic-geography-reading-group", "data", "icelandic-inflation.xlsx"))
+```
+
 
 

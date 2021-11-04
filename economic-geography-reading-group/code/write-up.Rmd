@@ -1,0 +1,22 @@
+---
+title: "Untitled"
+author: "JJayes"
+date: "04/11/2021"
+output: html_document
+---
+
+# Write up of *The Gift of Moving*
+
+How do you ensure that your children grow up to lead happy and fulfilling lives? By investing in their education? By taking them to soccer practice and music lessons? By reading to them every evening before bed?
+
+Surely, these factors play an important role in childhood development and likely influence happiness during the life course. However, a recent paper by three economists shows that moving to a different location may have a large impacts on children's level of education and later life income.
+
+In [The Gift of Moving: Intergenerational Consequences of a Mobility Shock](https://academic.oup.com/restud/advance-article/doi/10.1093/restud/rdab062/6372705 "RESTUD Link"), published in the Review of Economic Studies, Emi Nakamura, Jósef Sigurdsson and Jón Steinsson show that children in families who moved from an Icelandic fishing village to the mainland after a volcanic eruption received an additional three and a half years of schooling, and earned \$27,500 more per year than comparable children whose families returned to the island in the wake of the eruption.
+
+The authors make use of a 'natural experiment' whereby those families whose houses were destroyed by the volcanic eruption were paid out by the government for the value of their house. In effect, this lowered the cost of migrating to the mainland for those whose homes were destroyed. Families who lost their homes were more likely to migrate to the mainland than those families whose houses survived.
+
+The mechanism that the authors propose is that moving to the mainland allowed better labour market matching for children, given their predisposition for a specific job. In contrast to those on the island, who were mainly employed in fishing, children of families who moved to the mainland could better find jobs that they were well suited to, and acquire the higher levels of education required for said jobs.
+
+Despite the government payout lowering the cost to migration, there is still a cost to moving. The authors find that this cost is borne by the parents, who saw a marginally
+
+In the remainder of this post I explain the specifics behind their
