@@ -180,6 +180,27 @@ Where the outcome is schooling:
 ]
 
 ---
+
+## What do they mean?
+
+.pull-left[
+
+As the cost of migrating decreases, individuals are freed to take up occupations that are better suited to their skill set. 
+
+If we want to ensure a labour market functions effectively, we should think carefully about how to implement policy in light of this result.
+
+E.g. did the Rehn-Meidner Swedish model effectively encourage the **right people** to migrate internally?
+
+]
+
+.pull-right[
+
+&lt;img src="images/migration.jpg" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+]
+
+---
 ## What are the findings?
 
 .panelset[
@@ -208,7 +229,7 @@ Wald estimate:
 .panel[.panel-name[Marginal treatment effect]
 
 
-&lt;img src="index_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/mte-fig-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -232,12 +253,45 @@ Wald estimate:
 ## Setting
 
 &lt;img src="images/volcano_map.png" width="60%" style="display: block; margin: auto;" /&gt;
+---
+## Data
 
+.pull-left[
 
+- Register data on Westman Islands inhabitants
+
+- Follow these individuals after volcanic eruption
+
+- Track their labour market and education outcomes
+
+- Coverage on earnings data is 95 percent of population of interest
+
+- Education data is complete
+
+]
+.pull-right[
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="images/data_slide.jpg" alt="A year before the eruption, the fishing village of Vestmannaeyjar, is shown in this 1972 photo, nestled between the sea and the Helgafjell Volcano" width="100%" /&gt;
+&lt;p class="caption"&gt;A year before the eruption, the fishing village of Vestmannaeyjar, is shown in this 1972 photo, nestled between the sea and the Helgafjell Volcano&lt;/p&gt;
+&lt;/div&gt;
+
+]
 ---
 ## Instrument
 
+.pull-left[
 Families whose houses were destroyed were more likely to move away from the Westman Islands permanently.
+]
+
+.pull-right[
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="images/intstrument_slide.jpg" alt="A structure destroyed by the eruption, in Heimaey, on July 24, 1974." width="100%" /&gt;
+&lt;p class="caption"&gt;A structure destroyed by the eruption, in Heimaey, on July 24, 1974.&lt;/p&gt;
+&lt;/div&gt;
+
+]
 
 ---
 ## LATE
@@ -284,6 +338,42 @@ The effect for the general population will be smaller as "compliers in our exper
 
 - House destruction was **as good as random** within the town. Spatial correlation shown to be unimportant
 
+]
+
+---
+
+## LATE: Independence
+
+.panelset[
+.panel[.panel-name[House age map]
+
+&lt;img src="index_files/figure-html/unnamed-chunk-8-1.svg" style="display: block; margin: auto;" /&gt;
+
+]
+
+.panel[.panel-name[House age density]
+
+&lt;img src="index_files/figure-html/unnamed-chunk-9-1.svg" style="display: block; margin: auto;" /&gt;
+
+]
+]
+
+---
+
+## LATE: Independence
+
+.panelset[
+.panel[.panel-name[House price map]
+
+&lt;img src="index_files/figure-html/unnamed-chunk-10-1.svg" style="display: block; margin: auto;" /&gt;
+
+]
+
+.panel[.panel-name[House price density]
+
+&lt;img src="index_files/figure-html/unnamed-chunk-11-1.svg" style="display: block; margin: auto;" /&gt;
+
+]
 ]
 
 ---
@@ -388,42 +478,6 @@ group)
 ---
 ## Balance tests
 
-.panelset[
-.panel[.panel-name[House age map]
-
-&lt;img src="index_files/figure-html/unnamed-chunk-7-1.png" style="display: block; margin: auto;" /&gt;
-
-]
-
-.panel[.panel-name[House age density]
-
-&lt;img src="index_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
-
-]
-]
-
----
-
-## Balance tests
-
-.panelset[
-.panel[.panel-name[House price map]
-
-&lt;img src="index_files/figure-html/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /&gt;
-
-]
-
-.panel[.panel-name[House price density]
-
-&lt;img src="index_files/figure-html/unnamed-chunk-10-1.png" style="display: block; margin: auto;" /&gt;
-
-]
-]
-
----
-
-## Balance tests
-
 Because 
 
 **House-price ~ income and wealth**, 
@@ -436,7 +490,7 @@ the authors assume that the shock is as good as randomly assigned.
 
 --
 
-**Wald Estimator**
+**Wald Estimator** for income of those younger than 25 at time of eruption:
 
 Formula:
 
@@ -448,12 +502,81 @@ $$ \frac{$3,000}{11.4\%} = $26,600 $$
 
 ## Estimation results: labour income
 
-**2SLS Estimator**
+&lt;img src="images/labour_income_results.png" width="80%" style="display: block; margin: auto;" /&gt;
 
+---
+
+## Estimation results: labour income
+
+&lt;img src="images/labour_income_results_2sls.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+## Estimation results: labour income
+
+&lt;img src="index_files/figure-html/age-plot-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+## Estimation results: labour income
+
+
+.pull-left[
+
+Relative to those whose houses were not destroyed, those who lost their homes had **lower income between 18 and 25** (while at school) before seeing their incomes **rise during the remainder of their labour income earning years**.
+
+]
+
+.pull-right[
+
+&lt;img src="index_files/figure-html/age-plot-out-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+## So who benefits?
+
+&lt;img src="images/rdab062f6.jpeg" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+## Estimation results: driven by high earners?
+
+&lt;img src="index_files/figure-html/mte-fig-out-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+## Estimation results: driven by high earners?
+
+.pull-left[
+No, trimming the distribution to just between 15th and 85th percentiles reduces the effect, but not substantially.
+
+From an effect size of 83 percent of the control group's income to 60 percent.
+]
+
+.pull-right[
+
+&lt;img src="index_files/figure-html/mte-fig-out-2-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+## What about the parents?
+
+&lt;img src="images/labour_income_results_hh_head.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+## Estimation results: schooling
+
+&lt;img src="images/education_results_years.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+## How do the authors explain the gains?
 
 ---
 ## Questions
 
+**Inflation** was super high at the time - how does this impact getting a cash payout for your house versus keeping an asset that keeps its value?
+
+&lt;img src="index_files/figure-html/unnamed-chunk-18-1.svg" style="display: block; margin: auto;" /&gt;
 
 
 

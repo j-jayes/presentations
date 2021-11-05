@@ -22,7 +22,8 @@ knitr::opts_chunk$set(
   echo = F,
   warning = F,
   message = F,
-  fig.align = 'center'
+  fig.align = 'center',
+  dev = "svg"
 )
 library(xaringan)
 library(xaringanExtra)
@@ -192,6 +193,29 @@ Where the outcome is schooling:
 ]
 
 ---
+
+## What do they mean?
+
+.pull-left[
+
+As the cost of migrating decreases, individuals are freed to take up occupations that are better suited to their skill set. 
+
+If we want to ensure a labour market functions effectively, we should think carefully about how to implement policy in light of this result.
+
+E.g. did the Rehn-Meidner Swedish model effectively encourage the **right people** to migrate internally?
+
+]
+
+.pull-right[
+
+```{r, out.width="80%"}
+knitr::include_graphics("images/migration.jpg")
+```
+
+
+]
+
+---
 ## What are the findings?
 
 .panelset[
@@ -220,7 +244,7 @@ Wald estimate:
 .panel[.panel-name[Marginal treatment effect]
 
 
-```{r, fig.height=5}
+```{r mte-fig, fig.height=5.5, out.width="80%"}
 df <- read_rds(here("economic-geography-reading-group", "data", "marginal-treatment-effect-df.rds"))
 
 df %>% 
@@ -264,12 +288,43 @@ knitr::include_graphics("images/volcano_ash.jpg")
 ```{r, out.width="60%"}
 knitr::include_graphics("images/volcano_map.png")
 ```
+---
+## Data
 
+.pull-left[
 
+- Register data on Westman Islands inhabitants
+
+- Follow these individuals after volcanic eruption
+
+- Track their labour market and education outcomes
+
+- Coverage on earnings data is 95 percent of population of interest
+
+- Education data is complete
+
+]
+.pull-right[
+
+```{r, out.width="100%", fig.cap="A year before the eruption, the fishing village of Vestmannaeyjar, is shown in this 1972 photo, nestled between the sea and the Helgafjell Volcano"}
+knitr::include_graphics("images/data_slide.jpg")
+```
+
+]
 ---
 ## Instrument
 
+.pull-left[
 Families whose houses were destroyed were more likely to move away from the Westman Islands permanently.
+]
+
+.pull-right[
+
+```{r, out.width="100%", fig.cap="A structure destroyed by the eruption, in Heimaey, on July 24, 1974."}
+knitr::include_graphics("images/intstrument_slide.jpg")
+```
+
+]
 
 ---
 ## LATE
@@ -316,6 +371,130 @@ The effect for the general population will be smaller as "compliers in our exper
 
 - House destruction was **as good as random** within the town. Spatial correlation shown to be unimportant
 
+]
+
+---
+
+## LATE: Independence
+
+.panelset[
+.panel[.panel-name[House age map]
+
+```{r, fig.height=5.5, fig.width=10}
+library(haven)
+
+df <- read_rds(here("economic-geography-reading-group", "data", "house_locations.rds"))
+df_boundary <- read_rds(here("economic-geography-reading-group", "data", "boundary.rds"))
+
+ ggplot() +
+  geom_point(aes(longitude, latitude, colour = house_year, shape = destroyed), data = df, size = 2) +
+  geom_tile(aes(longitude, latitude, fill = .pred_class), data = df_boundary, alpha = .1, size = 5, show.legend = F) +
+  scale_color_gradient2(
+    low = "#fc8d59",
+    high = "#99d594",
+    mid = "#ffffbf",
+    midpoint = 1935
+  ) +
+  scale_fill_grey() +
+  theme_xaringan() +
+  labs(
+    x = NULL,
+    y = NULL,
+    colour = "Year of construction",
+    shape = NULL
+  ) +
+  theme(
+    legend.position = "bottom",
+    panel.grid = element_blank(),
+    axis.text = element_blank()
+  ) +
+  guides(
+    shape = guide_legend(nrow = 2),
+    colour = guide_colorbar(
+      barwidth = 20,
+      title.position = "top"
+    )
+  )
+```
+
+]
+
+.panel[.panel-name[House age density]
+
+```{r, fig.height=5.5, fig.width=10}
+df %>%
+  ggplot(aes(house_year, fill = destroyed)) +
+  geom_density(alpha = .5) +
+  scale_x_continuous(labels = scales::number_format(big.mark = "")) +
+  theme_xaringan() +
+  scale_fill_manual(values = c("#fc8d59", "#99d594")) +
+  labs(
+    x = "Year of house construction",
+    y = NULL,
+    fill = NULL
+  ) +
+    theme(legend.position = "bottom")
+```
+
+]
+]
+
+---
+
+## LATE: Independence
+
+.panelset[
+.panel[.panel-name[House price map]
+
+```{r, fig.height=5.5, fig.width=10}
+ggplot() +
+  geom_point(aes(longitude, latitude, colour = house_total_value, shape = destroyed), data = df, size = 2) +
+  geom_tile(aes(longitude, latitude, fill = .pred_class), data = df_boundary, alpha = .1, size = 5, show.legend = F) +
+    scale_color_gradient2(
+    low = "blue",
+    high = "red",
+    mid = "pink",
+    midpoint = log10(40000),
+    trans = "log10",
+    labels = scales::dollar_format()
+  ) +
+    scale_fill_grey() +
+    scale_shape_manual(values = c(19, 17)) +
+    theme_xaringan() +
+  labs(
+    colour = "House value",
+    shape = NULL,
+    x = NULL,
+    y = NULL
+  ) +
+    theme(legend.position = "bottom",
+          panel.grid = element_blank(),
+          axis.text = element_blank()) +
+    guides(shape = guide_legend(nrow = 2),
+           colour = guide_colorbar(barwidth = 20,
+                                   title.position = "top"))
+```
+
+]
+
+.panel[.panel-name[House price density]
+
+```{r, fig.height=5, fig.width=10}
+df %>%
+  ggplot(aes(house_total_value, fill = destroyed)) +
+  geom_density(alpha = .3) +
+  scale_x_log10(labels = scales::dollar_format()) +
+  theme_xaringan() +
+  scale_fill_manual(values = c("#2b8cbe", "darkred")) +
+  labs(
+    x = "House value",
+    y = NULL,
+    fill = NULL
+  ) +
+  theme(legend.position = "bottom")
+```
+
+]
 ]
 
 ---
@@ -422,130 +601,6 @@ group)
 ---
 ## Balance tests
 
-.panelset[
-.panel[.panel-name[House age map]
-
-```{r, fig.height=6}
-library(haven)
-
-df <- read_rds(here("economic-geography-reading-group", "data", "house_locations.rds"))
-df_boundary <- read_rds(here("economic-geography-reading-group", "data", "boundary.rds"))
-
- ggplot() +
-  geom_point(aes(longitude, latitude, colour = house_year, shape = destroyed), data = df, size = 2) +
-  geom_tile(aes(longitude, latitude, fill = .pred_class), data = df_boundary, alpha = .1, size = 5, show.legend = F) +
-  scale_color_gradient2(
-    low = "#fc8d59",
-    high = "#99d594",
-    mid = "#ffffbf",
-    midpoint = 1935
-  ) +
-  scale_fill_grey() +
-  theme_xaringan() +
-  labs(
-    x = NULL,
-    y = NULL,
-    colour = "Year of construction",
-    shape = NULL
-  ) +
-  theme(
-    legend.position = "bottom",
-    panel.grid = element_blank(),
-    axis.text = element_blank()
-  ) +
-  guides(
-    shape = guide_legend(nrow = 2),
-    colour = guide_colorbar(
-      barwidth = 20,
-      title.position = "top"
-    )
-  )
-```
-
-]
-
-.panel[.panel-name[House age density]
-
-```{r, fig.height=6}
-df %>%
-  ggplot(aes(house_year, fill = destroyed)) +
-  geom_density(alpha = .5) +
-  scale_x_continuous(labels = scales::number_format(big.mark = "")) +
-  theme_xaringan() +
-  scale_fill_manual(values = c("#fc8d59", "#99d594")) +
-  labs(
-    x = "Year of house construction",
-    y = NULL,
-    fill = NULL
-  ) +
-    theme(legend.position = "bottom")
-```
-
-]
-]
-
----
-
-## Balance tests
-
-.panelset[
-.panel[.panel-name[House price map]
-
-```{r, fig.height=6}
-ggplot() +
-  geom_point(aes(longitude, latitude, colour = house_total_value, shape = destroyed), data = df, size = 2) +
-  geom_tile(aes(longitude, latitude, fill = .pred_class), data = df_boundary, alpha = .1, size = 5, show.legend = F) +
-    scale_color_gradient2(
-    low = "blue",
-    high = "red",
-    mid = "pink",
-    midpoint = log10(40000),
-    trans = "log10",
-    labels = scales::dollar_format()
-  ) +
-    scale_fill_grey() +
-    scale_shape_manual(values = c(19, 17)) +
-    theme_xaringan() +
-  labs(
-    colour = "House value",
-    shape = NULL,
-    x = NULL,
-    y = NULL
-  ) +
-    theme(legend.position = "bottom",
-          panel.grid = element_blank(),
-          axis.text = element_blank()) +
-    guides(shape = guide_legend(nrow = 2),
-           colour = guide_colorbar(barwidth = 20,
-                                   title.position = "top"))
-```
-
-]
-
-.panel[.panel-name[House price density]
-
-```{r, fig.height=6}
-df %>%
-  ggplot(aes(house_total_value, fill = destroyed)) +
-  geom_density(alpha = .3) +
-  scale_x_log10(labels = scales::dollar_format()) +
-  theme_xaringan() +
-  scale_fill_manual(values = c("#2b8cbe", "darkred")) +
-  labs(
-    x = "House value",
-    y = NULL,
-    fill = NULL
-  ) +
-  theme(legend.position = "bottom")
-```
-
-]
-]
-
----
-
-## Balance tests
-
 Because 
 
 **House-price ~ income and wealth**, 
@@ -558,7 +613,7 @@ the authors assume that the shock is as good as randomly assigned.
 
 --
 
-**Wald Estimator**
+**Wald Estimator** for income of those younger than 25 at time of eruption:
 
 Formula:
 
@@ -570,18 +625,124 @@ $$ \frac{$3,000}{11.4\%} = $26,600 $$
 
 ## Estimation results: labour income
 
-**2SLS Estimator**
+```{r, out.width="80%"}
+knitr::include_graphics("images/labour_income_results.png")
+```
 
+---
+
+## Estimation results: labour income
+
+```{r, out.width="80%"}
+knitr::include_graphics("images/labour_income_results_2sls.png")
+```
+
+---
+## Estimation results: labour income
+
+```{r age-plot, fig.width=8, fig.height=5}
+df <- read_rds(here::here("economic-geography-reading-group", "data", "life-cycle-earnings.rds"))
+
+df %>% 
+    ggplot(aes(x, y, colour = series)) +
+    geom_line(cex = 2, alpha = .5) +
+    theme_xaringan() +
+    theme(legend.position = "bottom") +
+    scale_colour_viridis_d() +
+    scale_y_continuous(labels = scales::dollar_format()) +
+    labs(x = "Age",
+         y = "Average earnings \n(2014 Dollars)",
+         colour = NULL)
+```
+
+---
+## Estimation results: labour income
+
+
+.pull-left[
+
+Relative to those whose houses were not destroyed, those who lost their homes had **lower income between 18 and 25** (while at school) before seeing their incomes **rise during the remainder of their labour income earning years**.
+
+]
+
+.pull-right[
+
+```{r age-plot-out, ref.label="age-plot", echo=FALSE, warning=FALSE, fig.height= 8, out.width="100%"}
+
+```
+
+]
+
+---
+## So who benefits?
+
+```{r, out.width="80%"}
+knitr::include_graphics("images/rdab062f6.jpeg")
+```
+
+
+---
+## Estimation results: driven by high earners?
+
+```{r mte-fig-out, ref.label="mte-fig", echo=FALSE, warning=FALSE, fig.height= 5, out.width="80%"}
+
+```
+
+---
+## Estimation results: driven by high earners?
+
+.pull-left[
+No, trimming the distribution to just between 15th and 85th percentiles reduces the effect, but not substantially.
+
+From an effect size of 83 percent of the control group's income to 60 percent.
+]
+
+.pull-right[
+
+```{r mte-fig-out-2, ref.label="mte-fig", echo=FALSE, warning=FALSE, fig.height= 5, out.width="100%"}
+
+```
+
+]
+
+---
+## What about the parents?
+
+```{r, out.width="80%"}
+knitr::include_graphics("images/labour_income_results_hh_head.png")
+```
+
+---
+## Estimation results: schooling
+
+```{r, out.width="80%"}
+knitr::include_graphics("images/education_results_years.png")
+```
+
+
+---
+## How do the authors explain the gains?
 
 ---
 ## Questions
 
-**Inflation**
+**Inflation** was super high at the time - how does this impact getting a cash payout for your house versus keeping an asset that keeps its value?
 
-```{r}
-library(readxl)
+```{r, fig.height=5, fig.width=10}
+df <- read_rds(here("economic-geography-reading-group", "data", "icelandic-inflation.rds"))
 
-df <- read_excel(here("economic-geography-reading-group", "data", "icelandic-inflation.xlsx"))
+df %>% 
+    ggplot(aes(year, inflation_rate)) +
+    geom_point() +
+    geom_line() +
+    geom_hline(yintercept = 0, lty = 2) +
+    geom_vline(xintercept = 1973, lty = 3) +
+    theme_xaringan() +
+    scale_y_continuous(labels = scales::percent_format()) +
+    labs(x = NULL,
+         y = NULL,
+         title = "Iceland Inflation Rate (CPI)",
+         caption = "Volcanic eruption in 1973 shown with dotted line")
 ```
 
 
