@@ -513,7 +513,7 @@ df %>%
 ## Balance tests
 
 ```{r, fig.width=4, out.width="80%"}
-knitr::include_graphics("images/balance-tests.png")
+knitr::include_graphics("images/balance-tests.PNG")
 ```
 
 ---
@@ -558,7 +558,7 @@ $$ \frac{$3,000}{11.4\%} = $26,600 $$
 ## Estimation results: labour income
 
 ```{r, out.width="80%"}
-knitr::include_graphics("images/labour_income_results.png")
+knitr::include_graphics("images/labour_income_results.PNG")
 ```
 
 ---
@@ -615,7 +615,7 @@ From an effect size of 83 percent of the control group's income to 60 percent.
 ## What about the parents income?
 
 ```{r, out.width="80%"}
-knitr::include_graphics("images/labour_income_results_25_plus.png")
+knitr::include_graphics("images/labour_income_results_25_plus.PNG")
 ```
 
 
@@ -638,7 +638,7 @@ class: inverse
 ## Estimation results: moving on schooling
 
 ```{r, out.width="90%"}
-knitr::include_graphics("images/outcome-schooling-all.png")
+knitr::include_graphics("images/outcome-schooling-all.PNG")
 ```
 
 ---
@@ -701,21 +701,21 @@ knitr::include_graphics("images/Roy-model.jpg")
 ## Returns to specialization
 
 ```{r, out.width="70%"}
-knitr::include_graphics("images/simple-sorting-1.png")
+knitr::include_graphics("images/simple-sorting-1.PNG")
 ```
 
 ---
 ## Returns to specialization
 
 ```{r, out.width="70%"}
-knitr::include_graphics("images/simple-sorting-2.png")
+knitr::include_graphics("images/simple-sorting-2.PNG")
 ```
 ---
 
 ## Returns to specialization
 
 ```{r, out.width="70%"}
-knitr::include_graphics("images/simple-sorting-3.png")
+knitr::include_graphics("images/simple-sorting-3.PNG")
 ```
 ---
 
@@ -724,7 +724,7 @@ knitr::include_graphics("images/simple-sorting-3.png")
 We can uncover the characteristics of the compliers:
 
 ```{r, out.width= "85%"}
-knitr::include_graphics("images/compliers.png")
+knitr::include_graphics("images/compliers.PNG")
 ```
 
 ---
