@@ -1,7 +1,7 @@
 ---
 title: "The Gift of Moving:"
 subtitle: "Intergenerational consequences of a mobility shock"
-author: "Nakamura, Sigurdsson, and Steinsson"
+author: "Nakamura, Sigurdsson, and Steinsson "
 institute: ""
 date: "2021"
 output:
