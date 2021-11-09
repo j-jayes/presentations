@@ -324,8 +324,8 @@ The effect for the general population will be smaller as "compliers in our exper
 ```{r, fig.height=5.5, fig.width=10}
 library(haven)
 
-df <- read_rds(here("economic-geography-reading-group", "data", "house_locations.rds"))
-df_boundary <- read_rds(here("economic-geography-reading-group", "data", "boundary.rds"))
+df <- read_rds(here( "data", "house_locations.rds"))
+df_boundary <- read_rds(here( "data", "boundary.rds"))
 
  ggplot() +
   geom_point(aes(longitude, latitude, colour = house_year, shape = destroyed), data = df, size = 2) +
@@ -573,7 +573,7 @@ knitr::include_graphics("images/labour_income_results_2sls.png")
 ## Estimation results: life time income
 
 ```{r age-plot, fig.width=8, fig.height=5}
-df <- read_rds(here::here("economic-geography-reading-group", "data", "life-cycle-earnings.rds"))
+df <- read_rds(here::here( "data", "life-cycle-earnings.rds"))
 
 df %>% 
     ggplot(aes(x, y, colour = series)) +
@@ -654,7 +654,7 @@ knitr::include_graphics("images/outcome-schooling-all-box.png")
 The people who move away leave **comparatively high incomes** behind on the Westman Islands. 
 
 ```{r, out.width="70%", fig.height=5}
-df <- read_rds(here("economic-geography-reading-group", "data", "incomes_by_region.rds"))
+df <- read_rds(here( "data", "incomes_by_region.rds"))
 
 df %>% ggplot(aes(x, y, colour = series)) +
     geom_line(cex = 2, alpha = .8) +
@@ -754,7 +754,7 @@ A shock that lowered the costs of migration resulted in a transfer from parents 
 **Inflation** was super high at the time - how does this impact getting a cash payout for your house versus keeping an asset that keeps its value?
 
 ```{r, fig.height=5, fig.width=10}
-df <- read_rds(here("economic-geography-reading-group", "data", "icelandic-inflation.rds"))
+df <- read_rds(here( "data", "icelandic-inflation.rds"))
 
 df %>% 
     ggplot(aes(year, inflation_rate)) +
@@ -816,7 +816,7 @@ Wald estimate:
 
 
 ```{r mte-fig, fig.height=5.5, out.width="80%"}
-df <- read_rds(here("economic-geography-reading-group", "data", "marginal-treatment-effect-df.rds"))
+df <- read_rds(here( "data", "marginal-treatment-effect-df.rds"))
 
 df %>% 
     mutate(type = "Point estimate",
