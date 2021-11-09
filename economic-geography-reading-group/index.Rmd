@@ -13,6 +13,7 @@ output:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
+      slideNumberFormat: "%current%"
 ---
 
 class: center, inverse
@@ -77,8 +78,6 @@ knitr::include_url("https://academic.oup.com/restud/advance-article/doi/10.1093/
 ---
 
 ## Authors
-
---
 
 ![](images/authors.PNG)
 
@@ -216,66 +215,6 @@ knitr::include_graphics("images/migration.jpg")
 ]
 
 ---
-## What are the findings?
-
-.panelset[
-
-.panel[.panel-name[Wald and 2SLS estimates]
-
-.pull-left[
-
-Wald estimate:
-
-**$ 26,600**
-
-]
-
-.pull-right[
-
-2SLS estimate:
-
-**$ 27,500**
-
-83% of the average earnings in the control group!
-
-]
-
-]
-.panel[.panel-name[Marginal treatment effect]
-
-
-```{r mte-fig, fig.height=5.5, out.width="80%"}
-df <- read_rds(here("economic-geography-reading-group", "data", "marginal-treatment-effect-df.rds"))
-
-df %>% 
-    mutate(type = "Point estimate",
-           across(c(x, y), round)) %>% 
-    ggplot(aes(x, y, colour = type)) +
-    geom_point(cex = 4) +
-    geom_line(cex = 2) +
-    geom_hline(lty = 2, 
-               cex = 2,
-               aes(yintercept = 26700, colour = "Point estimate mean")) +
-    scale_y_continuous(labels = scales::dollar_format()) +
-    xaringanthemer::theme_xaringan() +
-    scale_color_manual(values = c("#2b8cbe", "midnightblue")) +
-    labs(x = "Quantile of income distribution",
-         y = "Treatment effect ($)",
-         colour = NULL) +
-    theme(legend.position = "bottom")
-```
-
-]
-
-.panel[.panel-name[Lifetime earnings effects]
-
-
-]
-]
-
-
-
----
 ## Setting
 
 ```{r, fig, out.width="80%", fig.cap="The Eldfell Eruption of 1973 - The Atlantic"}
@@ -299,7 +238,7 @@ knitr::include_graphics("images/volcano_map.png")
 
 - Track their labour market and education outcomes
 
-- Coverage on earnings data is 95 percent of population of interest
+- Coverage on earnings data is **95 percent of population of interest**
 
 - Education data is complete
 
@@ -316,6 +255,8 @@ knitr::include_graphics("images/data_slide.jpg")
 
 .pull-left[
 Families whose houses were destroyed were more likely to move away from the Westman Islands permanently.
+
+So the authors instrument for $$Moved_i$$ with an indicator variable for whether the person lived in a house which was $$Destroyed_i$$ during the eruption.
 ]
 
 .pull-right[
@@ -375,7 +316,7 @@ The effect for the general population will be smaller as "compliers in our exper
 
 ---
 
-## LATE: Independence
+## LATE: Independence: house age
 
 .panelset[
 .panel[.panel-name[House age map]
@@ -441,7 +382,7 @@ df %>%
 
 ---
 
-## LATE: Independence
+## LATE: Independence: house value
 
 .panelset[
 .panel[.panel-name[House price map]
@@ -599,15 +540,6 @@ group)
 ]
 
 ---
-## Balance tests
-
-Because 
-
-**House-price ~ income and wealth**, 
-
-the authors assume that the shock is as good as randomly assigned.
-
----
 
 ## Estimation results: labour income
 
@@ -638,7 +570,7 @@ knitr::include_graphics("images/labour_income_results_2sls.png")
 ```
 
 ---
-## Estimation results: labour income
+## Estimation results: life time income
 
 ```{r age-plot, fig.width=8, fig.height=5}
 df <- read_rds(here::here("economic-geography-reading-group", "data", "life-cycle-earnings.rds"))
@@ -654,32 +586,6 @@ df %>%
          y = "Average earnings \n(2014 Dollars)",
          colour = NULL)
 ```
-
----
-## Estimation results: labour income
-
-
-.pull-left[
-
-Relative to those whose houses were not destroyed, those who lost their homes had **lower income between 18 and 25** (while at school) before seeing their incomes **rise during the remainder of their labour income earning years**.
-
-]
-
-.pull-right[
-
-```{r age-plot-out, ref.label="age-plot", echo=FALSE, warning=FALSE, fig.height= 8, out.width="100%"}
-
-```
-
-]
-
----
-## So who benefits?
-
-```{r, out.width="80%"}
-knitr::include_graphics("images/rdab062f6.jpeg")
-```
-
 
 ---
 ## Estimation results: driven by high earners?
@@ -706,25 +612,144 @@ From an effect size of 83 percent of the control group's income to 60 percent.
 ]
 
 ---
-## What about the parents?
+## What about the parents income?
 
 ```{r, out.width="80%"}
-knitr::include_graphics("images/labour_income_results_hh_head.png")
+knitr::include_graphics("images/labour_income_results_25_plus.png")
+```
+
+
+---
+## So who benefits w.r.t income?
+
+```{r, out.width="80%"}
+knitr::include_graphics("images/rdab062f6.jpeg")
 ```
 
 ---
-## Estimation results: schooling
 
-```{r, out.width="80%"}
-knitr::include_graphics("images/education_results_years.png")
+class: inverse
+
+# What about education?
+
+### If you move to an area with jobs that require higher levels of education, do you get more education?
+
+---
+## Estimation results: moving on schooling
+
+```{r, out.width="90%"}
+knitr::include_graphics("images/outcome-schooling-all.png")
+```
+
+---
+## Estimation results: moving on schooling
+
+```{r, out.width="90%"}
+knitr::include_graphics("images/outcome-schooling-all-box.png")
+```
+
+---
+## Why are these results surprising?
+
+The people who move away leave **comparatively high incomes** behind on the Westman Islands. 
+
+```{r, out.width="70%", fig.height=5}
+df <- read_rds(here("economic-geography-reading-group", "data", "incomes_by_region.rds"))
+
+df %>% ggplot(aes(x, y, colour = series)) +
+    geom_line(cex = 2, alpha = .8) +
+    theme_xaringan() +
+    scale_color_brewer(palette = "Dark2") +
+    scale_y_continuous(labels = scales::dollar_format()) +
+    theme(legend.position = "bottom") +
+    guides(colour = guide_legend(nrow = 2)) +
+    labs(x = NULL,
+         y = "Average earnings (2014$)",
+         colour = NULL)
 ```
 
 
 ---
 ## How do the authors explain the gains?
 
+A model of **labour misallocation** and **comparative advantage**.
+
+.pull-left[
+
+```{r}
+knitr::include_graphics("images/fisherman.jpg")
+```
+
+]
+
+.pull-right[
+
+```{r}
+knitr::include_graphics("images/office-women.jpg")
+```
+
+]
 ---
-## Questions
+## Returns to specialization
+As your comparative skills in non-fishing increase, your returns to remaining in a fishing-centred economy decrease.
+
+```{r, out.width="70%"}
+knitr::include_graphics("images/Roy-model.jpg")
+```
+
+---
+## Returns to specialization
+
+```{r, out.width="70%"}
+knitr::include_graphics("images/simple-sorting-1.png")
+```
+
+---
+## Returns to specialization
+
+```{r, out.width="70%"}
+knitr::include_graphics("images/simple-sorting-2.png")
+```
+---
+
+## Returns to specialization
+
+```{r, out.width="70%"}
+knitr::include_graphics("images/simple-sorting-3.png")
+```
+---
+
+## How does theory match evidence?
+
+We can uncover the characteristics of the compliers:
+
+```{r, out.width= "85%"}
+knitr::include_graphics("images/compliers.png")
+```
+
+---
+## How does theory match evidence?
+
+Compliers have on average **parents with more education**, and are **more likely to have changed houses after 1960**, indicating less stickiness to the Westman Islands.
+
+### "The fact that the compliers in our experiment come from homes with highly educated parents, thus, suggests that they may be particularly likely to have a comparative advantage in occupations that require relatively large amounts of education."
+---
+# Now with OLG!
+```{r, out.width = "80%"}
+knitr::include_graphics("images/complex-sorting.png")
+```
+
+
+---
+
+## Conclusion
+
+The cost of migration can cause labour market mismatches and a misallocation that persists over generations.
+
+A shock that lowered the costs of migration resulted in a transfer from parents to children for the families who were not well suited to the specific kind of work that the Westmand Islands specialized in.
+
+---
+## Questions (1)
 
 **Inflation** was super high at the time - how does this impact getting a cash payout for your house versus keeping an asset that keeps its value?
 
@@ -744,6 +769,84 @@ df %>%
          title = "Iceland Inflation Rate (CPI)",
          caption = "Volcanic eruption in 1973 shown with dotted line")
 ```
+
+---
+## Questions (2)
+
+### What does the relocation to the mainland during the eruption mean? 
+
+If you stay somewhere for 6 months, what do you do during that time? Do you simply wait to become a fisherman again? Do you retrain? What abou those whose houses were not destroyed but were unable to work for the 6 months, and then would have to invest time and money in repairing their homes once they were allowed back on the island?
+
+---
+
+## Questions (3)
+
+### The labour market mismatch is at the level of the children, yet the parents are making the decision to move!
+
+Then you have to argue to what extent the mismatch is heritable.
+
+---
+
+## What are the findings?
+
+.panelset[
+
+.panel[.panel-name[Wald and 2SLS estimates]
+
+.pull-left[
+
+Wald estimate:
+
+**$ 26,600**
+
+]
+
+.pull-right[
+
+2SLS estimate:
+
+**$ 27,500**
+
+83% of the average earnings in the control group!
+
+]
+
+]
+.panel[.panel-name[Marginal treatment effect]
+
+
+```{r mte-fig, fig.height=5.5, out.width="80%"}
+df <- read_rds(here("economic-geography-reading-group", "data", "marginal-treatment-effect-df.rds"))
+
+df %>% 
+    mutate(type = "Point estimate",
+           across(c(x, y), round)) %>% 
+    ggplot(aes(x, y, colour = type)) +
+    geom_point(cex = 4) +
+    geom_line(cex = 2) +
+    geom_hline(lty = 2, 
+               cex = 2,
+               aes(yintercept = 26700, colour = "Point estimate mean")) +
+    scale_y_continuous(labels = scales::dollar_format()) +
+    xaringanthemer::theme_xaringan() +
+    scale_color_manual(values = c("#2b8cbe", "midnightblue")) +
+    labs(x = "Quantile of income distribution",
+         y = "Treatment effect ($)",
+         colour = NULL) +
+    theme(legend.position = "bottom")
+```
+
+]
+
+.panel[.panel-name[Lifetime earnings effects]
+
+```{r age-plot-out-2, ref.label="age-plot", echo=FALSE, warning=FALSE, fig.height= 5, out.width="80%"}
+
+```
+
+
+]
+]
 
 
 

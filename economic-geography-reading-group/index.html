@@ -65,8 +65,6 @@ class: center, inverse
 
 ## Authors
 
---
-
 ![](images/authors.PNG)
 
 ---
@@ -201,47 +199,6 @@ E.g. did the Rehn-Meidner Swedish model effectively encourage the **right people
 ]
 
 ---
-## What are the findings?
-
-.panelset[
-
-.panel[.panel-name[Wald and 2SLS estimates]
-
-.pull-left[
-
-Wald estimate:
-
-**$ 26,600**
-
-]
-
-.pull-right[
-
-2SLS estimate:
-
-**$ 27,500**
-
-83% of the average earnings in the control group!
-
-]
-
-]
-.panel[.panel-name[Marginal treatment effect]
-
-
-&lt;img src="index_files/figure-html/mte-fig-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
-
-]
-
-.panel[.panel-name[Lifetime earnings effects]
-
-
-]
-]
-
-
-
----
 ## Setting
 
 &lt;div class="figure" style="text-align: center"&gt;
@@ -264,7 +221,7 @@ Wald estimate:
 
 - Track their labour market and education outcomes
 
-- Coverage on earnings data is 95 percent of population of interest
+- Coverage on earnings data is **95 percent of population of interest**
 
 - Education data is complete
 
@@ -282,6 +239,8 @@ Wald estimate:
 
 .pull-left[
 Families whose houses were destroyed were more likely to move away from the Westman Islands permanently.
+
+So the authors instrument for `$$Moved_i$$` with an indicator variable for whether the person lived in a house which was `$$Destroyed_i$$` during the eruption.
 ]
 
 .pull-right[
@@ -342,7 +301,7 @@ The effect for the general population will be smaller as "compliers in our exper
 
 ---
 
-## LATE: Independence
+## LATE: Independence: house age
 
 .panelset[
 .panel[.panel-name[House age map]
@@ -360,7 +319,7 @@ The effect for the general population will be smaller as "compliers in our exper
 
 ---
 
-## LATE: Independence
+## LATE: Independence: house value
 
 .panelset[
 .panel[.panel-name[House price map]
@@ -476,15 +435,6 @@ group)
 ]
 
 ---
-## Balance tests
-
-Because 
-
-**House-price ~ income and wealth**, 
-
-the authors assume that the shock is as good as randomly assigned.
-
----
 
 ## Estimation results: labour income
 
@@ -511,31 +461,9 @@ $$ \frac{$3,000}{11.4\%} = $26,600 $$
 &lt;img src="images/labour_income_results_2sls.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
-## Estimation results: labour income
+## Estimation results: life time income
 
 &lt;img src="index_files/figure-html/age-plot-1.svg" style="display: block; margin: auto;" /&gt;
-
----
-## Estimation results: labour income
-
-
-.pull-left[
-
-Relative to those whose houses were not destroyed, those who lost their homes had **lower income between 18 and 25** (while at school) before seeing their incomes **rise during the remainder of their labour income earning years**.
-
-]
-
-.pull-right[
-
-&lt;img src="index_files/figure-html/age-plot-out-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
-
-]
-
----
-## So who benefits?
-
-&lt;img src="images/rdab062f6.jpeg" width="80%" style="display: block; margin: auto;" /&gt;
-
 
 ---
 ## Estimation results: driven by high earners?
@@ -558,25 +486,168 @@ From an effect size of 83 percent of the control group's income to 60 percent.
 ]
 
 ---
-## What about the parents?
+## What about the parents income?
 
-&lt;img src="images/labour_income_results_hh_head.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/labour_income_results_25_plus.png" width="80%" style="display: block; margin: auto;" /&gt;
+
 
 ---
-## Estimation results: schooling
+## So who benefits w.r.t income?
 
-&lt;img src="images/education_results_years.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/rdab062f6.jpeg" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: inverse
+
+# What about education?
+
+### If you move to an area with jobs that require higher levels of education, do you get more education?
+
+---
+## Estimation results: moving on schooling
+
+&lt;img src="images/outcome-schooling-all.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+## Estimation results: moving on schooling
+
+&lt;img src="images/outcome-schooling-all-box.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+## Why are these results surprising?
+
+The people who move away leave **comparatively high incomes** behind on the Westman Islands. 
+
+&lt;img src="index_files/figure-html/unnamed-chunk-19-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 ## How do the authors explain the gains?
 
+A model of **labour misallocation** and **comparative advantage**.
+
+.pull-left[
+
+&lt;img src="images/fisherman.jpg" style="display: block; margin: auto;" /&gt;
+
+]
+
+.pull-right[
+
+&lt;img src="images/office-women.jpg" style="display: block; margin: auto;" /&gt;
+
+]
 ---
-## Questions
+## Returns to specialization
+As your comparative skills in non-fishing increase, your returns to remaining in a fishing-centred economy decrease.
+
+&lt;img src="images/Roy-model.jpg" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+## Returns to specialization
+
+&lt;img src="images/simple-sorting-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+## Returns to specialization
+
+&lt;img src="images/simple-sorting-2.png" width="70%" style="display: block; margin: auto;" /&gt;
+---
+
+## Returns to specialization
+
+&lt;img src="images/simple-sorting-3.png" width="70%" style="display: block; margin: auto;" /&gt;
+---
+
+## How does theory match evidence?
+
+We can uncover the characteristics of the compliers:
+
+&lt;img src="images/compliers.png" width="85%" style="display: block; margin: auto;" /&gt;
+
+---
+## How does theory match evidence?
+
+Compliers have on average **parents with more education**, and are **more likely to have changed houses after 1960**, indicating less stickiness to the Westman Islands.
+
+### "The fact that the compliers in our experiment come from homes with highly educated parents, thus, suggests that they may be particularly likely to have a comparative advantage in occupations that require relatively large amounts of education."
+---
+# Now with OLG!
+&lt;img src="images/complex-sorting.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## Conclusion
+
+The cost of migration can cause labour market mismatches and a misallocation that persists over generations.
+
+A shock that lowered the costs of migration resulted in a transfer from parents to children for the families who were not well suited to the specific kind of work that the Westmand Islands specialized in.
+
+---
+## Questions (1)
 
 **Inflation** was super high at the time - how does this impact getting a cash payout for your house versus keeping an asset that keeps its value?
 
-&lt;img src="index_files/figure-html/unnamed-chunk-18-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-28-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+## Questions (2)
+
+### What does the relocation to the mainland during the eruption mean? 
+
+If you stay somewhere for 6 months, what do you do during that time? Do you simply wait to become a fisherman again? Do you retrain? What abou those whose houses were not destroyed but were unable to work for the 6 months, and then would have to invest time and money in repairing their homes once they were allowed back on the island?
+
+---
+
+## Questions (3)
+
+### The labour market mismatch is at the level of the children, yet the parents are making the decision to move!
+
+Then you have to argue to what extent the mismatch is heritable.
+
+---
+
+## What are the findings?
+
+.panelset[
+
+.panel[.panel-name[Wald and 2SLS estimates]
+
+.pull-left[
+
+Wald estimate:
+
+**$ 26,600**
+
+]
+
+.pull-right[
+
+2SLS estimate:
+
+**$ 27,500**
+
+83% of the average earnings in the control group!
+
+]
+
+]
+.panel[.panel-name[Marginal treatment effect]
+
+
+&lt;img src="index_files/figure-html/mte-fig-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+]
+
+.panel[.panel-name[Lifetime earnings effects]
+
+&lt;img src="index_files/figure-html/age-plot-out-2-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+]
+]
 
 
 
@@ -586,7 +657,8 @@ From an effect size of 83 percent of the control group's income to 60 percent.
 <script>var slideshow = remark.create({
 "highlightStyle": "github",
 "highlightLines": true,
-"countIncrementalSlides": false
+"countIncrementalSlides": false,
+"slideNumberFormat": "%current%"
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
