@@ -71,7 +71,7 @@ knitr::include_graphics("images/volcano-cover-2.jpg")
 ### No longer a working paper!
 
 ```{r}
-knitr::include_url("https://academic.oup.com/restud/advance-article/doi/10.1093/restud/rdab062/6372705")
+knitr::include_graphics("images/restud.PNG")
 ```
 
 
